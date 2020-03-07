@@ -1,0 +1,70 @@
+{
+	"name": "acejax",
+	"version": "1.0.0",
+	"description": "Zero dependency, Promise based HTTP request library for Node.js",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "rimraf ./dist && babel ./src --out-dir ./dist --ignore node-modules",
+		"prepublishOnly": "npm run build"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org"
+	},
+	"author": "Aleksandar Stojanoski",
+	"license": "MIT",
+	"homepage": "https://github.com/acestojanoski/acejax#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/acestojanoski/acejax.git"
+	},
+	"bugs": {
+		"url": "https://github.com/acestojanoski/acejax/issues"
+	},
+	"keywords": [
+		"http",
+		"https",
+		"ajax",
+		"get",
+		"acejax",
+		"request",
+		"api",
+		"simple",
+		"lightwieght",
+		"human-friendly",
+		"network",
+		"net",
+		"fetch",
+		"curl",
+		"wget",
+		"post",
+		"url",
+		"uri",
+		"promise"
+	],
+	"xo": {
+		"prettier": true,
+		"ignores": [
+			"**/*.ts"
+		],
+		"rules": {
+			"no-unused-vars": "warn",
+			"no-return-assign": "off",
+			"node/no-deprecated-api": "off"
+		}
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "xo"
+		}
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.8.4",
+		"@babel/core": "^7.8.7",
+		"@babel/node": "^7.8.7",
+		"@babel/preset-env": "^7.8.7",
+		"husky": "^4.2.3",
+		"rimraf": "^3.0.2",
+		"xo": "^0.27.2"
+	},
+	"dependencies": {}
+}
