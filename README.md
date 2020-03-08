@@ -2,6 +2,7 @@
 [![CircleCI](https://circleci.com/gh/acestojanoski/acejax/tree/master.svg?style=svg)](https://circleci.com/gh/acestojanoski/acejax/tree/master)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![install size](https://packagephobia.now.sh/badge?p=acejax)](https://packagephobia.now.sh/result?p=acejax)
 [![Downloads](https://img.shields.io/npm/dm/acejax.svg)](https://npmjs.com/acejax)
 
 > Zero dependency, Promise based HTTP request library for Node.js
@@ -82,6 +83,13 @@ The request method.
 ##### headers
 Type: `object`
 
+Default:
+```
+{
+    'User-Agent': 'acejax (https://github.com/acestojanoski/acejax)'
+}
+```
+
 The request headers.
 
 ##### timeout
@@ -109,84 +117,10 @@ If this option is provided the `Content-Type` header will be set to `application
 If it is an object, the object will be converted to string using `new URLSearchParams(object).toString()`.
 
 ### acejax.get(url, headers?)
-Returns a Promise.
-
-#### url
-Type: `string`
-
-The request URL.
-
-#### headers
-Type: `object`
-
-The request headers.
-
 ### acejax.delete(url, headers?)
-Returns a Promise.
-
-#### url
-Type: `string`
-
-The request URL.
-
-#### headers
-Type: `object`
-
-The request headers.
-
 ### acejax.post(url, body?, headers?)
-Returns a Promise.
-
-#### url
-Type: `string`
-
-The request URL.
-
-#### body
-Type: `object | string | Buffer`
-
-The request body.
-
-#### headers
-Type: `object`
-
-The request headers.
-
 ### acejax.put(url, body?, headers?)
-Returns a Promise.
-
-#### url
-Type: `string`
-
-The request URL.
-
-#### body
-Type: `object | string | Buffer`
-
-The request body.
-
-#### headers
-Type: `object`
-
-The request headers.
-
 ### acejax.patch(url, body?, headers?)
-Returns a Promise.
-
-#### url
-Type: `string`
-
-The request URL.
-
-#### body
-Type: `object | string | Buffer`
-
-The request body.
-
-#### headers
-Type: `object`
-
-The request headers.
 
 ### Response
 Type: `object`

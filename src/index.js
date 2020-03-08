@@ -7,7 +7,9 @@ import AcejaxError from './acejax-error';
 
 const defaults = {
 	method: 'GET',
-	headers: {},
+	headers: {
+		'User-Agent': 'acejax (https://github.com/acestojanoski/acejax)',
+	},
 	json: false,
 };
 
