@@ -22,7 +22,7 @@ export interface AcejaxRequest {
 	headers?: object;
 	tiemout?: number;
 	json?: boolean;
-	body?: object | string;
+	body?: object | string | Buffer;
 	form?: object | string;
 }
 
@@ -39,17 +39,22 @@ export interface AcejaxError extends Error, AcejaxResponse {}
 
 interface Acejax {
 	(options: AcejaxRequest): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	get(url: string, headers: object): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	delete(url: string, headers: object): Promise<AcejaxResponse> | Promise<AcejaxError>;
+	get(url: string, headers?: object): Promise<AcejaxResponse> | Promise<AcejaxError>;
+	delete(url: string, headers?: object): Promise<AcejaxResponse> | Promise<AcejaxError>;
 	post(
 		url: string,
-		body: object | string,
-		headers: object
+		body?: object | string,
+		headers?: object
 	): Promise<AcejaxResponse> | Promise<AcejaxError>;
 	put(
 		url: string,
-		body: object | string,
-		headers: object
+		body?: object | string,
+		headers?: object
+	): Promise<AcejaxResponse> | Promise<AcejaxError>;
+	patch(
+		url: string,
+		body?: object | string,
+		headers?: object
 	): Promise<AcejaxResponse> | Promise<AcejaxError>;
 }
 
