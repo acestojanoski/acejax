@@ -191,7 +191,7 @@ The request headers.
 ### Response
 Type: `object`
 
-On promise rejection, it will be an instance of the custom error class `AcejaxError`. The `name` of the error will be set to `AcejaxError`, and the error message will be the `statusMessage` of the response. Additionally it will contains the standard response properties.
+On promise rejection, it will be an instance of the custom error class `AcejaxError`. The `name` of the error will be set to `AcejaxError`, and the error message will be the `statusMessage` of the response. Additionally, it contains the standard response properties:
 
 #### statusCode
 Type: `number`
