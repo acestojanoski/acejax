@@ -92,8 +92,9 @@ export {postRequest as post};
 export {putRequest as put};
 export {deleteRequest as delete};
 
-// Export for common js support
+// Exports for common js support
 module.exports = acejax;
+module.exports.default = acejax;
 module.exports.get = getRequest;
 module.exports.post = postRequest;
 module.exports.put = putRequest;

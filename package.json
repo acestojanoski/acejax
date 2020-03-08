@@ -29,7 +29,7 @@
 		"request",
 		"api",
 		"simple",
-		"lightwieght",
+		"lightweight",
 		"human-friendly",
 		"network",
 		"net",
@@ -43,9 +43,6 @@
 	],
 	"xo": {
 		"prettier": true,
-		"ignores": [
-			"**/*.ts"
-		],
 		"rules": {
 			"no-unused-vars": "warn",
 			"no-return-assign": "off",
