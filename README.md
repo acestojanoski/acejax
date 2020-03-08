@@ -59,5 +59,11 @@ myFunction();
 
 ## API
 
+### acejax(options)
+
+Returns a Promise.
+
+#### options
+
 ## LICENSE
 [MIT](./LICENSE)
