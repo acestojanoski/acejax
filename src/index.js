@@ -19,8 +19,7 @@ const acejax = (acejaxRequest = defaults) =>
 
 		const options = Object.assign({}, parsedUrl, {
 			headers: initialOptions.headers,
-			method:
-				initialOptions.method && initialOptions.method.toUpperCase(),
+			method: initialOptions.method && initialOptions.method.toUpperCase(),
 			timeout: initialOptions.timeout,
 		});
 
@@ -75,27 +74,14 @@ const acejax = (acejaxRequest = defaults) =>
 		req.end();
 	});
 
-const getRequest = (url, headers) => acejax({url, method: 'get', headers});
-
-const postRequest = (url, body, headers) =>
-	acejax({method: 'post', url, body, headers});
-
-const putRequest = (url, body, headers) =>
-	acejax({method: 'put', url, body, headers});
-
-const deleteRequest = (url, headers) =>
-	acejax({method: 'delete', url, headers});
+acejax.get = (url, headers) => acejax({method: 'get', url, headers});
+acejax.delete = (url, headers) => acejax({method: 'delete', url, headers});
+acejax.put = (url, body, headers) => acejax({method: 'put', url, body, headers});
+acejax.post = (url, body, headers) => acejax({method: 'post', url, body, headers});
+acejax.patch = (url, body, headers) => acejax({method: 'patch', url, body, headers});
 
 export default acejax;
-export {getRequest as get};
-export {postRequest as post};
-export {putRequest as put};
-export {deleteRequest as delete};
 
 // Exports for common js support
 module.exports = acejax;
 module.exports.default = acejax;
-module.exports.get = getRequest;
-module.exports.post = postRequest;
-module.exports.put = putRequest;
-module.exports.delete = deleteRequest;
