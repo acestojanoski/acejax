@@ -37,7 +37,7 @@ const acejax = require('acejax');
 
 const myFunction = async () => {
     try {
-        const result = await acejax('https://some-api-endpoint', { json: true }});
+        const result = await acejax('https://some-api-endpoint', { json: true });
 
         console.log(result.body);
         /* output (json parsed):
@@ -71,6 +71,8 @@ The request URL.
 Type: `object`
 
 The [https.request()](https://nodejs.org/api/https.html#https_https_request_options_callback) options.
+
+The method is `GET` by default.
 
 ##### json
 Type: `boolean`
