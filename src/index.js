@@ -1,9 +1,10 @@
 import {request} from 'https';
 import {globalAgent} from 'http';
-import {parse as parseUrl} from 'url';
 
-import {isObject} from './utils';
+import {isObject, isString} from './utils';
 import AcejaxError from './acejax-error';
+import getUrlOptions from './get-url-options';
+import buildResponse from './build-response';
 
 const defaults = {
 	method: 'GET',
@@ -13,74 +14,73 @@ const defaults = {
 	json: false,
 };
 
-const acejax = (acejaxRequest = defaults) =>
-	new Promise((resolve, reject) => {
-		const initialOptions = Object.assign({}, defaults, acejaxRequest);
+const acejax = (url, acejaxOptions = defaults) => {
+	if (!url) {
+		throw new TypeError('`url` argument is missing');
+	}
 
-		const parsedUrl = parseUrl(initialOptions.url);
+	if (!isString(url)) {
+		throw new TypeError('`url` argument must be a string');
+	}
 
-		const options = Object.assign({}, parsedUrl, {
-			headers: initialOptions.headers,
-			method: initialOptions.method && initialOptions.method.toUpperCase(),
-			timeout: initialOptions.timeout,
-		});
+	if (!isObject(acejaxOptions)) {
+		throw new TypeError('`acejaxOptions` argument must be an object');
+	}
 
-		if (parsedUrl.protocol === 'http:') {
-			options.agent = globalAgent;
+	return new Promise((resolve, reject) => {
+		const {json, body, form, ...requestOptions} = acejaxOptions;
+		const urlOptions = getUrlOptions(url);
+
+		if (urlOptions.protocol === 'http:') {
+			requestOptions.agent = globalAgent;
 		}
 
-		const req = request(options, res => {
-			let data = '';
+		const options = Object.assign({}, defaults, urlOptions, requestOptions);
 
-			res.on('data', chunk => (data += chunk));
+		const req = request(options, res => {
+			res.body = '';
+			res.url = url;
+			res.acejaxOptions = acejaxOptions;
+
+			res.on('data', chunk => (res.body += chunk));
 
 			res.on('end', () => {
 				if (res.statusCode >= 400) {
-					const acejaxError = new AcejaxError(res, data);
-					reject(acejaxError);
+					reject(new AcejaxError(res));
 				} else {
-					resolve({
-						statusCode: res.statusCode,
-						statusMessage: res.statusMessage,
-						headers: res.headers,
-						rawHeaders: res.rawHeaders,
-						httpVersion: res.httpVersion,
-						body: initialOptions.json ? JSON.parse(data) : data,
-					});
+					if (json) {
+						res.body = JSON.parse(res.body);
+					}
+
+					resolve(buildResponse(res));
 				}
 			});
 		});
 
 		req.on('error', reject);
 
-		if (initialOptions.body) {
-			let body = initialOptions.body;
+		if (body) {
 			if (isObject(body)) {
-				body = JSON.stringify(body);
 				req.setHeader('Content-Type', 'application/json');
 			}
 
-			req.write(body);
+			req.write(isObject(body) ? JSON.stringify(body) : body);
 		}
 
-		if (initialOptions.form) {
-			let form = initialOptions.form;
-			if (isObject(form)) {
-				form = new URLSearchParams(form).toString();
-			}
-
+		if (form) {
 			req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
-			req.write(form);
+			req.write(isObject(form) ? new URLSearchParams(form).toString() : form);
 		}
 
 		req.end();
 	});
+};
 
-acejax.get = (url, headers) => acejax({method: 'get', url, headers});
-acejax.delete = (url, headers) => acejax({method: 'delete', url, headers});
-acejax.put = (url, body, headers) => acejax({method: 'put', url, body, headers});
-acejax.post = (url, body, headers) => acejax({method: 'post', url, body, headers});
-acejax.patch = (url, body, headers) => acejax({method: 'patch', url, body, headers});
+acejax.get = (url, acejaxOptions) => acejax(url, {...acejaxOptions, method: 'get'});
+acejax.post = (url, acejaxOptions) => acejax(url, {...acejaxOptions, method: 'post'});
+acejax.put = (url, acejaxOptions) => acejax(url, {...acejaxOptions, method: 'put'});
+acejax.delete = (url, acejaxOptions) => acejax(url, {...acejaxOptions, method: 'delete'});
+acejax.patch = (url, acejaxOptions) => acejax(url, {...acejaxOptions, method: 'patch'});
 
 export default acejax;
 

@@ -20,7 +20,7 @@ const acejax = require('acejax');
 
 const myFunction = async () => {
     try {
-        const result = await acejax.get('https://github.com/acestojanoski/acejax');
+        const result = await acejax('https://github.com/acestojanoski/acejax');
         console.log(result.body);
         // output: <!doctype html>...
     } catch(error) {
@@ -37,11 +37,7 @@ const acejax = require('acejax');
 
 const myFunction = async () => {
     try {
-        const result = await acejax({
-            url: 'https://some-api-endpoint',
-            method: 'get',
-            json: true,
-        });
+        const result = await acejax('https://some-api-endpoint', { json: true }});
 
         console.log(result.body);
         /* output (json parsed):
@@ -61,48 +57,27 @@ myFunction();
 
 ## API
 
-### acejax(options)
+### acejax(url, acejaxOptions?)
+Returns: `Promise`
 
-Returns a Promise.
+Both resolved and rejected Promise will have the same format: [Response](#Response)
 
-#### options
-Type: `object`
-
-##### url
+#### url
 Type: `string`
 
 The request URL.
 
-##### method
-Type: `string`
-
-Default: `GET`
-
-The request method.
-
-##### headers
+#### acejaxOptions
 Type: `object`
 
-Default:
-```
-{
-    'User-Agent': 'acejax (https://github.com/acestojanoski/acejax)'
-}
-```
-
-The request headers.
-
-##### timeout
-Type: `number`
-
-The request timeout.
+The [https.request()](https://nodejs.org/api/https.html#https_https_request_options_callback) options.
 
 ##### json
 Type: `boolean`
 
 Default: `false`
 
-If it is set to `true`, the acejax library will use the JSON.parse() function to parse the response body.
+If this is set to `true`, the acejax library will use the JSON.parse() function to parse the response body.
 
 ##### body
 Type: `string | object | Buffer`
@@ -116,16 +91,16 @@ If this option is provided the `Content-Type` header will be set to `application
 
 If it is an object, the object will be converted to string using `new URLSearchParams(object).toString()`.
 
-### acejax.get(url, headers?)
-### acejax.delete(url, headers?)
-### acejax.post(url, body?, headers?)
-### acejax.put(url, body?, headers?)
-### acejax.patch(url, body?, headers?)
+### acejax.get(url, acejaxOptions?)
+### acejax.delete(url, acejaxOptions?)
+### acejax.post(url, acejaxOptions?)
+### acejax.put(url, acejaxOptions?)
+### acejax.patch(url, acejaxOptions?)
 
 ### Response
 Type: `object`
 
-On promise rejection, it will be an instance of the custom error class `AcejaxError`. The `name` of the error will be set to `AcejaxError`, and the error message will be the `statusMessage` of the response. Additionally, it contains the standard response properties:
+On promise rejection, it will be an instance of the custom error class `AcejaxError`. The `name` of the error will be set to `AcejaxError`, and the error message will be the `statusMessage` of the response. Additionally, it contains the standard response properties.
 
 #### statusCode
 Type: `number`
@@ -151,6 +126,16 @@ The response rawHeaders
 Type: `string`
 
 The response http version.
+
+#### acejaxOptions
+Type: `object`
+
+It will return back the acejaxOptions.
+
+#### url
+Type: `string`
+
+It will return back the request url.
 
 #### body
 Type: `string | object`

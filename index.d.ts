@@ -1,3 +1,6 @@
+import {RequestOptions} from 'http';
+import {URL} from 'url';
+
 type Method =
 	| 'GET'
 	| 'POST'
@@ -16,11 +19,7 @@ type Method =
 	| 'options'
 	| 'trace';
 
-export interface AcejaxRequest {
-	url: string;
-	method?: Method;
-	headers?: object;
-	tiemout?: number;
+export interface AcejaxOptions extends RequestOptions, URL {
 	json?: boolean;
 	body?: object | string | Buffer;
 	form?: object | string;
@@ -32,30 +31,18 @@ export interface AcejaxResponse {
 	readonly headers: object;
 	readonly rawHeaders: string[];
 	readonly httpVersion: string;
+	readonly acejaxOptions: AcejaxOptions;
+	readonly url: string;
 	readonly body: string | object;
 }
 
-export interface AcejaxError extends Error, AcejaxResponse {}
-
 interface Acejax {
-	(options: AcejaxRequest): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	get(url: string, headers?: object): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	delete(url: string, headers?: object): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	post(
-		url: string,
-		body?: object | string,
-		headers?: object
-	): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	put(
-		url: string,
-		body?: object | string,
-		headers?: object
-	): Promise<AcejaxResponse> | Promise<AcejaxError>;
-	patch(
-		url: string,
-		body?: object | string,
-		headers?: object
-	): Promise<AcejaxResponse> | Promise<AcejaxError>;
+	(url: string, acejaxOptions: AcejaxOptions): Promise<AcejaxResponse>;
+	get(url: string, acejaxOptions: AcejaxOptions): Promise<AcejaxResponse>;
+	post(url: string, acejaxOptions: AcejaxOptions): Promise<AcejaxResponse>;
+	put(url: string, acejaxOptions: AcejaxOptions): Promise<AcejaxResponse>;
+	patch(url: string, acejaxOptions: AcejaxOptions): Promise<AcejaxResponse>;
+	delete(url: string, acejaxOptions: AcejaxOptions): Promise<AcejaxResponse>;
 }
 
 declare const acejax: Acejax;
