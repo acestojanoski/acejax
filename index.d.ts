@@ -1,4 +1,4 @@
-import {RequestOptions} from 'http';
+import {RequestOptions} from 'https';
 import {URL} from 'url';
 
 type Method =
@@ -19,10 +19,13 @@ type Method =
 	| 'options'
 	| 'trace';
 
-export interface AcejaxOptions extends RequestOptions, URL {
+type RequestAndUrlOptions = RequestOptions & URL;
+
+export interface AcejaxOptions extends RequestAndUrlOptions {
 	json?: boolean;
 	body?: object | string | Buffer;
 	form?: object | string;
+	method?: Method;
 }
 
 export interface AcejaxResponse {
